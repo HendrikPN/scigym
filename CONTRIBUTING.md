@@ -1,12 +1,10 @@
 # How to contribute
-===================
 
 SciGym is a library for scientific [OpenAI gym] reinforcement learning (RL) environments. 
 Any RL environment which is of scientific value can be added to this library.
 Here, we give a brief description on how to standardize and add your scientific RL environment to SciGym.
 
 ## Adding an environment
-=========================
 
 We recommend that you add any environment also to our website database at [scigym.ai]. The website serves as a curator for scigym environments.
 However, your environment does not need to be included to the scigym package to appear on our website. Just log in with your github and upload your repository.
@@ -16,9 +14,9 @@ Then you can directly make a pull request to the SciGym library such that your e
 
 ## How to standardize your environment
 
-* Create a new repo called gym-foo, which should also be a PIP package.
-
 There is a [template] that visualizes and explains all the following at https://github.com/hendrikpn/gym-template.
+
+* Create a new repo called e.g. gym-foo, which should also be a PIP package.
 
 * The repo should have at least the following files:
   ```sh
@@ -80,16 +78,17 @@ There is a [template] that visualizes and explains all the following at https://
         ...
     ```
 
-    A short description of each method can be found in the [template].
+    A short description of each method can also be found in the [template].
 
 ## How to add an environment to SciGym
 
 In order to add your standardized environment to the scigym package, follow the following steps.
 
 1. `Fork` scigym.
-2. Make a new directory with a title which appropriately captures your scientific problem at `scigym/envs`. For simplicity we call it `scigym/envs/foo` here.
+2. Make a new directory with a title that appropriately captures your scientific problem at `scigym/envs`. For simplicity we call it `scigym/envs/foo` here.
 3. Copy your environment file to `scigym/envs/foo/foo_env.py`
-4. Add any requirements that your environment has to our `setup.py` in `extras`:
+4. Add other relevant files to the directory `scigym/envs/foo` such as a README.md.
+5. Add any dependencies that your environment has to our `setup.py` in `extras`:
 
     ```python
     extras = {
@@ -97,7 +96,7 @@ In order to add your standardized environment to the scigym package, follow the 
     }
     ```
 
-5. Register your environment `FooEnv` at `scigym/envs/__init__.py`:
+6. Register your environment `FooEnv` at `scigym/envs/__init__.py`:
 
     ```python
     register(
@@ -106,13 +105,12 @@ In order to add your standardized environment to the scigym package, follow the 
     )
     ```
 
-6. Import your environment in `scigym/envs/foo/__init__.py`:
+7. Import your environment in `scigym/envs/foo/__init__.py`:
 
     ```python
     from scigym.envs.foo.foo_env import FooEnv
     ```
 
-7. Add other relevant files to the directory `scigym/envs/foo` such as a README.md.
 8. Make a notification that a new environment has been included in the README.md under "What's new". 
 9. If your environment should be registered under a licence other than MIT, publish your licence statement in the LICENCE file under "Special Environments".
 10. Create a branch `environment/foo` and commit the changes there.
