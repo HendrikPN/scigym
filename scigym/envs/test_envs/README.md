@@ -1,0 +1,1 @@
+This directory just contains CartPoleEnv from OpenAI gym for the purpose of inital testing.
