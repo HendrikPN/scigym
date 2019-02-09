@@ -1,9 +1,17 @@
 **Status:** Development (expect bug fixes, minor updates and new
 environments)
 
-[![image]]
+<a href="https://unitary.fund/">
+    <img src="https://img.shields.io/badge/Supported%20By-UNITARY%20FUND-brightgreen.svg?style=for-the-badge"
+    />
+</a>
 
 # SciGym
+
+<a href="https://scigym.ai">
+    <img src="./assets/scigym-logo.png" width="120px" align="bottom"
+    />
+</a>
 
 **SciGym is a curated library for reinforcement learning environments in science.** 
 This is the `scigym` open-source library which gives you access to a standardized set of science environments.
@@ -43,7 +51,6 @@ You will need `pyglet` to render some environments.
 - 2019-02-09: Initial commit. Hello world :)
 
   [image]: https://img.shields.io/badge/Supported%20By-UNITARY%20FUND-brightgreen.svg?style=for-the-badge
-  [![image]]: https://unitary.fund/
   [OpenAI gym]: https://github.com/openai/gym
   [scigym.ai]: https://scigym.ai
   [Env]: https://github.com/openai/gym/blob/master/gym/core.py
