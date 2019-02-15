@@ -8,6 +8,7 @@ from version import VERSION
 # Environment-specific dependencies.
 extras = {
     'test_envs': ['PyOpenGL'],
+    'surfacecode': ['keras']
 }
 
 # Meta dependency groups.
@@ -34,3 +35,4 @@ setup(name='scigym_pkg',
       },
       tests_require=[],
 )
+

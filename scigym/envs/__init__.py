@@ -8,3 +8,8 @@ register(
     id='CartPole-test-v0',
     entry_point='scigym.envs.test_envs:CartPoleEnv',
 )
+
+register(
+    id='surfacecode-v0',
+    entry_point='scigym.envs.surfacecode:SurfaceCodeEnv',
+)
