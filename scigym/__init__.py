@@ -6,7 +6,8 @@ import warnings
 from gym import error
 from gym.utils import reraise
 
-from gym.core import Env, GoalEnv, Space, Wrapper, ObservationWrapper, ActionWrapper, RewardWrapper
+from gym.core import Env, GoalEnv, Wrapper, ObservationWrapper, ActionWrapper, RewardWrapper, Space
+from gym.spaces import Discrete, Box
 from gym.envs import make, spec
 from gym import logger
 
@@ -17,8 +18,10 @@ from scigym.version import VERSION as __version__
 # import all those gym classes/methods which we want to be able to call in scigym
 __all__ = [
     # "Env", 
-    # "Space", 
     # "Wrapper", 
+    "Space", 
     "make", 
-    "spec"
+    "spec",
+    "Discrete",
+    "Box"
     ]
