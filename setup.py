@@ -8,7 +8,7 @@ from version import VERSION
 # Environment-specific dependencies.
 extras = {
     'test_envs': ['PyOpenGL'],
-    'surfacecode': ['keras']
+    'surfacecode': ['tensorflow', 'keras']
 }
 
 # Meta dependency groups.
@@ -27,12 +27,9 @@ setup(name='scigym_pkg',
       packages=[package for package in find_packages()
                 if package.startswith('scigym')],
       zip_safe=False,
-      install_requires=[
-          'gym',
-      ],
+      install_requires=['gym',],
       extras_require=extras,
-      package_data={
-      },
+      package_data={'scigym': ['envs/surfacecode/referee_decoders/*']},
       tests_require=[],
 )
 
