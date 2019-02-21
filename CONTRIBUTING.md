@@ -114,7 +114,7 @@ In order to add your standardized environment to the scigym package, follow the 
 8. Make a notification that a new environment has been included in the README.md under "What's new". 
 9. If your environment should be registered under a licence other than MIT, publish your licence statement in the LICENCE file under "Special Environments".
 10. Create a branch `environment/foo` and commit the changes there.
-11. Create a pull request to a branch with the same name at https://github.com/hendrikpn/scigym.
+11. Create a pull request to the master branch or a new branch at https://github.com/hendrikpn/scigym.
 
 
   [OpenAI gym]: https://github.com/openai/gym
