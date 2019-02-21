@@ -19,23 +19,6 @@ Finally, if you use this environment to develop a decoder which outperforms the 
 
 <hr>
 
-#### 0) Installation and Getting Started
-
-This environment requires python 3, along with the additional packages:
-
-    1. gym
-    2. keras
-
-To install the package first clone this repository, and then from the root directory run
-
-```python
-python setup.py install
-```
-
-Alternatively, this package can be installed via pip or pipenv (which is recommended).
-
-<hr>
-
 #### 1) Documentation
 
 The environment provided here inherits directly from the openAI gym base class gym.env - as such, we recommend starting with the <a href="https://gym.openai.com/docs/"> openAI gym documentation </a> to familiarize yourself with the openAI gym API format.
@@ -43,8 +26,8 @@ The environment provided here inherits directly from the openAI gym base class g
 As the environment has various free attributes which should be specified, an instance of the environment is instantiated as follows:
 
 ```python
-from gym_surfacecode.envs import SurfaceCodeEnv
-my_env = SurfaceCodeEnv(p_phys=0.01, p_meas=0.01, error_model="DP", use_Y=True, volume_depth=3)
+from scigym.envs import surfacecode
+my_env = surfacecode.SurfaceCodeEnv(p_phys=0.01, p_meas=0.01, error_model="DP", use_Y=True, volume_depth=3)
 ```
 
 The attributes which need to be specified are as follows:
