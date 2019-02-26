@@ -49,7 +49,7 @@ class SurfaceCodeEnv(gym.Env):
 
 	# ----------------- Required gym.Env methods ---------------------------------------------------------------------
 
-	def __init__(self, p_phys=0.01, p_meas=0.01, error_model="DP", use_Y=True, volume_depth=3):
+	def __init__(self, p_phys=0.001, p_meas=0.0, error_model="X", use_Y=False, volume_depth=1):
 
 		self.d = 5
 		self.p_phys = p_phys
@@ -85,11 +85,8 @@ class SurfaceCodeEnv(gym.Env):
 		self.completed_actions = np.zeros(self.num_actions, int)
 		
 	
-		self.observation_space=gym.spaces.Box(low=0,high=1,
-									  shape=(self.volume_depth+self.n_action_layers,
-										2*self.d+1, 
-										2*self.d+1),
-									  dtype=np.uint8)
+		self.observation_space=gym.spaces.Box(low=0,high=1, shape=(self.volume_depth+self.n_action_layers, 
+			2*self.d+1, 2*self.d+1), dtype=np.uint8)
 		
 		self.action_space = gym.spaces.Discrete(self.num_actions)
 
