@@ -11,5 +11,5 @@ register(
 
 register(
     id='surfacecode-v0',
-    entry_point='scigym.envs.surfacecode:SurfaceCodeEnv',
+    entry_point='scigym.envs.quantum_physics.quantum_computing.surfacecode_decoding:SurfaceCodeEnv',
 )

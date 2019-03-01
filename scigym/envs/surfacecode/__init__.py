@@ -1,1 +1,0 @@
-from scigym.envs.surfacecode.surfacecode_env import SurfaceCodeEnv
