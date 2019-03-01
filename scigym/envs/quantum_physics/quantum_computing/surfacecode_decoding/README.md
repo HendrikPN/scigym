@@ -26,8 +26,8 @@ The environment provided here inherits directly from the openAI gym base class g
 As the environment has various free attributes which should be specified, an instance of the environment is instantiated as follows:
 
 ```python
-from scigym.envs import surfacecode
-my_env = surfacecode.SurfaceCodeEnv(p_phys=0.01, p_meas=0.01, error_model="DP", use_Y=True, volume_depth=3)
+from scigym.envs.quantum_physics.quantum_computing.surfacecode_decoding import SurfaceCodeEnv
+my_env = SurfaceCodeEnv(p_phys=0.001, p_meas=0.001, error_model="X", use_Y=False, volume_depth=1)
 ```
 
 The attributes which need to be specified are as follows:
