@@ -77,11 +77,11 @@ class SurfaceCodeEnv(gym.Env):
 		self.static_decoder = load_model(static_decoder_path)
 
 		self.identity_index = self.num_actions -1
-		self.identity_indicator = self.generate_identity_indicator(self.d)
+		self.identity_indicator = self._generate_identity_indicator(self.d)
 
-		self.qubits = self.generateSurfaceCodeLattice(self.d)
-		self.qubit_stabilizers = self.get_stabilizer_list(self.qubits, self.d)  
-		self.qubit_neighbours = self.get_qubit_neighbour_list(self.d) 
+		self.qubits = self._generateSurfaceCodeLattice(self.d)
+		self.qubit_stabilizers = self._get_stabilizer_list(self.qubits, self.d)  
+		self.qubit_neighbours = self._get_qubit_neighbour_list(self.d) 
 		self.completed_actions = np.zeros(self.num_actions, int)
 		
 	
@@ -114,10 +114,10 @@ class SurfaceCodeEnv(gym.Env):
 		self.lifetime = 0
 		
 		# Create the initial error - we wait until there is a non-trivial syndrome. BUT, the lifetime is still updated!
-		self.initialize_state()
+		self._initialize_state()
 
 		# Update the legal moves available to us
-		self.reset_legal_moves()
+		self._reset_legal_moves()
 
 		return self.board_state
 
@@ -138,15 +138,15 @@ class SurfaceCodeEnv(gym.Env):
 			done_identity = True
 
 		# 1) Apply the action to the hidden state
-		action_lattice = self.index_to_move(self.d, action, self.error_model, self.use_Y)
-		self.hidden_state = self.obtain_new_error_configuration(self.hidden_state, action_lattice)
+		action_lattice = self._index_to_move(self.d, action, self.error_model, self.use_Y)
+		self.hidden_state = self._obtain_new_error_configuration(self.hidden_state, action_lattice)
 
 		# 2) Calculate the reward
-		self.current_true_syndrome = self.generate_surface_code_syndrome_NoFT_efficient(self.hidden_state, self.qubits)
+		self.current_true_syndrome = self._generate_surface_code_syndrome_NoFT_efficient(self.hidden_state, self.qubits)
 		current_true_syndrome_vector = np.reshape(self.current_true_syndrome,(self.d+1)**2) 
 		num_anyons = np.sum(self.current_true_syndrome)
 
-		correct_label = self.generate_one_hot_labels_surface_code(self.hidden_state, self.error_model)
+		correct_label = self._generate_one_hot_labels_surface_code(self.hidden_state, self.error_model)
 		decoder_label = self.static_decoder.predict(np.array([current_true_syndrome_vector]), batch_size=1, verbose=0)
 
 		reward = 0
@@ -165,11 +165,11 @@ class SurfaceCodeEnv(gym.Env):
 				self.summed_syndrome_volume = np.zeros((self.d + 1, self.d + 1), int)
 				faulty_syndromes = []
 				for j in range(self.volume_depth):
-					error = self.generate_error(self.d, self.p_phys, self.error_model)
+					error = self._generate_error(self.d, self.p_phys, self.error_model)
 					if int(np.sum(error)!=0):
-						self.hidden_state = self.obtain_new_error_configuration(self.hidden_state, error)
-						self.current_true_syndrome = self.generate_surface_code_syndrome_NoFT_efficient(self.hidden_state, self.qubits)
-					current_faulty_syndrome = self.generate_faulty_syndrome(self.current_true_syndrome, self.p_meas)
+						self.hidden_state = self._obtain_new_error_configuration(self.hidden_state, error)
+						self.current_true_syndrome = self._generate_surface_code_syndrome_NoFT_efficient(self.hidden_state, self.qubits)
+					current_faulty_syndrome = self._generate_faulty_syndrome(self.current_true_syndrome, self.p_meas)
 					faulty_syndromes.append(current_faulty_syndrome)
 					self.summed_syndrome_volume += current_faulty_syndrome
 					self.lifetime += 1
@@ -178,11 +178,11 @@ class SurfaceCodeEnv(gym.Env):
 					trivial_volume = False
 
 			for j in range(self.volume_depth):
-				self.board_state[j, :, :] = self.padding_syndrome(faulty_syndromes[j])
+				self.board_state[j, :, :] = self._padding_syndrome(faulty_syndromes[j])
 
 
 			# reset the legal moves
-			self.reset_legal_moves()
+			self._reset_legal_moves()
 
 			# update the part of the state which shows the actions you have just taken
 			self.board_state[self.volume_depth:,:,:] = np.zeros((self.n_action_layers, 2 * self.d + 1, 2 * self.d + 1),int)
@@ -204,7 +204,7 @@ class SurfaceCodeEnv(gym.Env):
 				
 			# update the board state to reflect the action thats been taken
 			for k in range(self.n_action_layers):
-					self.board_state[self.volume_depth + k, :, :] = self.padding_actions(self.completed_actions[k * self.d ** 2:(k + 1) * self.d ** 2])
+					self.board_state[self.volume_depth + k, :, :] = self._padding_actions(self.completed_actions[k * self.d ** 2:(k + 1) * self.d ** 2])
 
 
 		return self.board_state, reward, self.done, {}
@@ -215,7 +215,7 @@ class SurfaceCodeEnv(gym.Env):
 
 	# ----------------- helper methods ---------------------------------------------------------------------
 
-	def initialize_state(self):
+	def _initialize_state(self):
 		"""
 		Generate an initial non-trivial syndrome volume
 		"""
@@ -230,11 +230,11 @@ class SurfaceCodeEnv(gym.Env):
 			self.summed_syndrome_volume = np.zeros((self.d + 1, self.d + 1), int)
 			faulty_syndromes = []
 			for j in range(self.volume_depth):
-				error = self.generate_error(self.d, self.p_phys, self.error_model)
+				error = self._generate_error(self.d, self.p_phys, self.error_model)
 				if int(np.sum(error)) != 0:
-					self.hidden_state = self.obtain_new_error_configuration(self.hidden_state, error)
-					self.current_true_syndrome = self.generate_surface_code_syndrome_NoFT_efficient(self.hidden_state, self.qubits)
-				current_faulty_syndrome = self.generate_faulty_syndrome(self.current_true_syndrome, self.p_meas)
+					self.hidden_state = self._obtain_new_error_configuration(self.hidden_state, error)
+					self.current_true_syndrome = self._generate_surface_code_syndrome_NoFT_efficient(self.hidden_state, self.qubits)
+				current_faulty_syndrome = self._generate_faulty_syndrome(self.current_true_syndrome, self.p_meas)
 				faulty_syndromes.append(current_faulty_syndrome)
 				self.summed_syndrome_volume += current_faulty_syndrome
 				self.lifetime += 1
@@ -244,10 +244,10 @@ class SurfaceCodeEnv(gym.Env):
 
 		# update the board state to reflect the measured syndromes
 		for j in range(self.volume_depth):
-			self.board_state[j, :, :] = self.padding_syndrome(faulty_syndromes[j])
+			self.board_state[j, :, :] = self._padding_syndrome(faulty_syndromes[j])
 
 
-	def reset_legal_moves(self):
+	def _reset_legal_moves(self):
 		"""
 		Reset the legal moves
 		"""
@@ -260,7 +260,7 @@ class SurfaceCodeEnv(gym.Env):
 		for qubit_number in range(self.d**2):
 
 			# first we deal with qubits that are adjacent to violated stabilizers
-			if self.is_adjacent_to_syndrome(qubit_number):
+			if self._is_adjacent_to_syndrome(qubit_number):
 				legal_qubits.add(qubit_number)
 
 		# now we have to make a list out of it and account for different types of actions
@@ -271,7 +271,7 @@ class SurfaceCodeEnv(gym.Env):
 
 
 
-	def is_adjacent_to_syndrome(self, qubit_number):
+	def _is_adjacent_to_syndrome(self, qubit_number):
 		"""
 		Determine whether a qubit is adjacent to a violated stabilizer
 		"""
@@ -282,7 +282,7 @@ class SurfaceCodeEnv(gym.Env):
 
 		return False
 
-	def padding_syndrome(self, syndrome_in):
+	def _padding_syndrome(self, syndrome_in):
 		"""
 		Pad a syndrome into the required embedding
 		"""
@@ -310,7 +310,7 @@ class SurfaceCodeEnv(gym.Env):
 						syndrome_out[x,y] = 1
 		return syndrome_out
 		
-	def padding_actions(self,actions_in):
+	def _padding_actions(self,actions_in):
 		"""
 		Pad an action history for a single type of Pauli flip into the required embedding.
 		"""
@@ -325,7 +325,7 @@ class SurfaceCodeEnv(gym.Env):
 
 		return actions_out
 
-	def indicate_identity(self, board_state):
+	def _indicate_identity(self, board_state):
 		"""
 		Pad the action history to indicate that an identity has been performed.
 		"""
@@ -335,7 +335,7 @@ class SurfaceCodeEnv(gym.Env):
 
 		return board_state
 
-	def get_qubit_stabilizer_list(self, qubits, qubit):
+	def _get_qubit_stabilizer_list(self, qubits, qubit):
 		""""
 		Given a qubit specification [qubit_row, qubit_column], this function returns the list of non-trivial stabilizer locations adjacent to that qubit
 		"""
@@ -348,17 +348,17 @@ class SurfaceCodeEnv(gym.Env):
 				qubit_stabilizers.append(tuple(qubits[row,column,j,:][:2]))
 		return qubit_stabilizers  
 
-	def get_stabilizer_list(self, qubits, d):
+	def _get_stabilizer_list(self, qubits, d):
 		""""
 		Given a lattice, this function outputs a list of non-trivial stabilizers adjacent to each qubit in the lattice, indexed row-wise starting from top left
 		"""
 		stabilizer_list = []
 		for qubit_row in range(self.d):
 			for qubit_column in range(self.d):
-				stabilizer_list.append(self.get_qubit_stabilizer_list(qubits,[qubit_row,qubit_column]))
+				stabilizer_list.append(self._get_qubit_stabilizer_list(qubits,[qubit_row,qubit_column]))
 		return stabilizer_list
 
-	def get_qubit_neighbour_list(self, d):
+	def _get_qubit_neighbour_list(self, d):
 		""""
 		Given a lattice, this function provides a list of the neighbouring qubits for each physical qubit.
 		"""
@@ -383,7 +383,7 @@ class SurfaceCodeEnv(gym.Env):
 
 		return neighbour_list
 
-	def generate_identity_indicator(self, d):
+	def _generate_identity_indicator(self, d):
 		""""
 		A simple helper function to generate the array that will be added to the action history to indicate that an identity has been performed.
 		"""
@@ -396,10 +396,7 @@ class SurfaceCodeEnv(gym.Env):
 				identity_indicator[row,col] = 0
 		return identity_indicator
 
-	# ------------- methods to be integrated -------------------------------
-
-
-	def generateSurfaceCodeLattice(self, d):
+	def _generateSurfaceCodeLattice(self, d):
 		""""
 		This function generates a distance d square surface code lattice. in particular, the function returns 
 		an array which, for each physical qubit, details the code-stabilizers supported on that qubit. To be more
@@ -440,7 +437,7 @@ class SurfaceCodeEnv(gym.Env):
 		return qubits
 
 
-	def multiplyPaulis(self, a,b):
+	def _multiplyPaulis(self, a,b):
 		""""
 		A simple helper function for multiplying Pauli Matrices. Returns ab.
 		:param: a: an int in [0,1,2,3] representing [I,X,Y,Z]
@@ -451,7 +448,7 @@ class SurfaceCodeEnv(gym.Env):
 		return out[int(a)][int(b)]
 
 
-	def generate_error(self, d,p_phys,error_model):
+	def _generate_error(self, d,p_phys,error_model):
 		""""
 		This function generates an error configuration, via a single application of the specified error channel, on a square dxd lattice.
 		
@@ -462,15 +459,15 @@ class SurfaceCodeEnv(gym.Env):
 		"""
 		
 		if error_model == "X":
-			return self.generate_X_error(d,p_phys)
+			return self._generate_X_error(d,p_phys)
 		elif error_model == "DP":
-			return self.generate_DP_error(d,p_phys)
+			return self._generate_DP_error(d,p_phys)
 		elif error_model == "IIDXZ":
-			return self.generate_IIDXZ_error(d,p_phys)
+			return self._generate_IIDXZ_error(d,p_phys)
 			
 		return error
 
-	def generate_DP_error(self,d,p_phys):
+	def _generate_DP_error(self,d,p_phys):
 		""""
 		This function generates an error configuration, via a single application of the depolarizing noise channel, on a square dxd lattice.
 		
@@ -489,7 +486,7 @@ class SurfaceCodeEnv(gym.Env):
 					
 		return error
 
-	def generate_X_error(self, d,p_phys):
+	def _generate_X_error(self, d,p_phys):
 		""""
 		This function generates an error configuration, via a single application of the bitflip noise channel, on a square dxd lattice.
 		
@@ -508,7 +505,7 @@ class SurfaceCodeEnv(gym.Env):
 		
 		return error
 					
-	def generate_IIDXZ_error(self, d,p_phys):
+	def _generate_IIDXZ_error(self, d,p_phys):
 		""""
 		This function generates an error configuration, via a single application of the IIDXZ noise channel, on a square dxd lattice.
 		
@@ -536,7 +533,7 @@ class SurfaceCodeEnv(gym.Env):
 		
 		return error
 
-	def generate_surface_code_syndrome_NoFT_efficient(self, error,qubits):
+	def _generate_surface_code_syndrome_NoFT_efficient(self, error,qubits):
 		""""
 		This function generates the syndrome (violated stabilizers) corresponding to the input error configuration, 
 		for the surface code.
@@ -560,7 +557,7 @@ class SurfaceCodeEnv(gym.Env):
 							
 		return syndrome
 
-	def generate_faulty_syndrome(self, true_syndrome, p_measurement_error):
+	def _generate_faulty_syndrome(self, true_syndrome, p_measurement_error):
 		""""
 		This function takes in a true syndrome, and generates a faulty syndrome according to some
 		given probability of measurement errors.
@@ -610,7 +607,7 @@ class SurfaceCodeEnv(gym.Env):
 		return faulty_syndrome
 
 
-	def obtain_new_error_configuration(self, old_configuration,new_gates):
+	def _obtain_new_error_configuration(self, old_configuration,new_gates):
 		""""
 		This function generates a new error configuration out of an old configuration and a new configuration,
 		 which might arise either from errors or corrections.
@@ -623,11 +620,11 @@ class SurfaceCodeEnv(gym.Env):
 		new_configuration = np.zeros(np.shape(old_configuration))
 		for row in range(new_configuration.shape[0]):
 			for col in range(new_configuration.shape[1]):
-				new_configuration[row,col] = self.multiplyPaulis(new_gates[row,col], old_configuration[row,col])
+				new_configuration[row,col] = self._multiplyPaulis(new_gates[row,col], old_configuration[row,col])
 				
 		return new_configuration
 
-	def index_to_move(self, d,move_index,error_model,use_Y=True):
+	def _index_to_move(self, d,move_index,error_model,use_Y=True):
 		""""
 		Given an integer index corresponding to a Pauli flip on a physical data qubit, this
 		function generates the lattice representation of the move.
@@ -680,7 +677,7 @@ class SurfaceCodeEnv(gym.Env):
 
 		return new_move
 
-	def generate_one_hot_labels_surface_code(self, error,err_model):
+	def _generate_one_hot_labels_surface_code(self, error,err_model):
 		""""
 
 		This function generates the homology class label, in a one-hot encoding, for a given perfect syndrome, to use as the target label
