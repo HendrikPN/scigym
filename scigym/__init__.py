@@ -6,8 +6,8 @@ import warnings
 from gym import error
 from gym.utils import reraise
 
-from gym.core import Env, GoalEnv, Wrapper, ObservationWrapper, ActionWrapper, RewardWrapper, Space
-from gym.spaces import Discrete, Box
+from gym.core import Env, GoalEnv, Wrapper, ObservationWrapper, ActionWrapper, RewardWrapper
+from gym.spaces import Space, Discrete, Box
 from gym.envs import make, spec
 from gym import logger
 
