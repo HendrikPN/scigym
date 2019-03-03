@@ -10,6 +10,6 @@ register(
 )
 
 register(
-    id='surfacecode-v0',
+    id='surfacecode-decoding-v0',
     entry_point='scigym.envs.quantum_physics.quantum_computing.surfacecode_decoding:SurfaceCodeEnv',
 )
