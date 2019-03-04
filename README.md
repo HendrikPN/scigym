@@ -48,7 +48,7 @@ You will need `pyglet` to render some environments.
 
 ## What's new
 
-- 2019-02-15: Added <a href="https://github.com/R-Sweke/gym-surfacecode">surfacecode</a> environment.
+- 2019-03-04: Added <a href="https://github.com/R-Sweke/gym-surfacecode">surfacecode</a> environment.
 - 2019-02-09: Initial commit. Hello world :)
 
   [image]: https://img.shields.io/badge/Supported%20By-UNITARY%20FUND-brightgreen.svg?style=for-the-badge
