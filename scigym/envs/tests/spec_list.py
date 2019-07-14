@@ -7,5 +7,3 @@ def should_skip_env_spec_for_tests(spec):
     return False
 
 spec_list = [spec for spec in sorted(envs.registry.all(), key=lambda x: x.id) if spec._entry_point[:6] == "scigym" and not should_skip_env_spec_for_tests(spec)]
-
-print(spec_list)
