@@ -7,7 +7,6 @@ from version import VERSION
 
 # Environment-specific dependencies.
 extras = {
-    'test_envs': ['PyOpenGL'],
     'surfacecode': ['tensorflow', 'keras']
 }
 
