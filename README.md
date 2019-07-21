@@ -48,6 +48,7 @@ You will need `pyglet` to render some environments.
 
 ## What's new
 
+- 2019-07-21: Added standardized unit testing for all scigym environments.
 - 2019-03-04: Added <a href="https://github.com/R-Sweke/gym-surfacecode">surfacecode</a> environment.
 - 2019-02-09: Initial commit. Hello world :)
 
