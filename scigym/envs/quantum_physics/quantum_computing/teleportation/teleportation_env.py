@@ -19,6 +19,7 @@ OUTCOME_PLUS_1 = 12
 OUTCOME_MINUS_1 = 13
 OUTCOME_PLUS_2 = 14
 OUTCOME_MINUS_2 = 15
+NOTHING = 16
 
 # actions involving certain qubits
 ACTIONS_Q0 = [0, 1, 6, 7]
@@ -120,21 +121,23 @@ class TeleportationEnv(gym.Env):
     # no rendering available
     metadata = {'render.modes': []}
 
-    def __init__(self, **userconfig):
+    def __init__(self, max_actions=40):
         self.n_actions = 10
         self.action_space = gym.spaces.Discrete(self.n_actions)
-        # self.observation_space = ???
+        self.max_actions = max_actions
+        self.observation_space = gym.spaces.MultiDiscrete([17] * self.max_actions)
         self.target = phiplus
         self.target_rho = np.dot(self.target, _H(self.target))
         self.state = _tensor(self.target, phiplus)
-        self.percept_now = []
+        self.percept_now = [NOTHING] * self.max_actions
         self.available_actions = [i for i in range(self.n_actions)]
+        self.actions_taken = 0
 
     def reset(self):
         self.target = phiplus
         self.target_rho = np.dot(self.target, _H(self.target))
         self.state = _tensor(self.target, phiplus)
-        self.percept_now = []
+        self.percept_now = [NOTHING] * self.max_actions
         self.available_actions = [i for i in range(self.n_actions)]
         return self.percept_now, {"available_actions": self.available_actions}
 
@@ -150,10 +153,14 @@ class TeleportationEnv(gym.Env):
             except ValueError:
                 continue
 
+    def _record_action(self, action):
+        self.percept_now[self.actions_taken] = action
+        self.actions_taken += 1
+
     def step(self, action):
-        if action in self.available_actions:
+        if action in self.available_actions and self.actions_taken < self.max_actions:
             if action in range(7):
-                self.percept_now += [action]
+                self._record_action(action)
 
             if action == H_0:
                 self.state = np.dot(h0, self.state)
@@ -172,23 +179,23 @@ class TeleportationEnv(gym.Env):
             elif action == MEASURE_0:
                 self.state, outcome = _measure(self.state, 0)
                 if outcome == 0:
-                    self.percept_now += [OUTCOME_PLUS_0]
+                    self._record_action(OUTCOME_PLUS_0)
                 else:
-                    self.percept_now += [OUTCOME_MINUS_0]
+                    self._record_action(OUTCOME_MINUS_0)
                 self._remove_actions(ACTIONS_Q0)
             elif action == MEASURE_1:
                 self.state, outcome = _measure(self.state, 1)
                 if outcome == 0:
-                    self.percept_now += [OUTCOME_PLUS_1]
+                    self._record_action(OUTCOME_PLUS_1)
                 else:
-                    self.percept_now += [OUTCOME_MINUS_1]
+                    self._record_action(OUTCOME_MINUS_1)
                 self._remove_actions(ACTIONS_Q1)
             elif action == MEASURE_2:
                 self.state, outcome = _measure(self.state, 2)
                 if outcome == 0:
-                    self.percept_now += [OUTCOME_PLUS_2]
+                    self._record_action(OUTCOME_PLUS_2)
                 else:
-                    self.percept_now += [OUTCOME_MINUS_2]
+                    self._record_action(OUTCOME_MINUS_2)
                 self._remove_actions(ACTIONS_Q2)
 
         if self._check_success():
@@ -198,7 +205,8 @@ class TeleportationEnv(gym.Env):
             reward = 0
             episode_finished = 0
 
-        if not self.available_actions:  # if no actions remain, episode is over
+        # if no actions remain, episode is over
+        if not self.available_actions or self.actions_taken >= self.max_actions:
             episode_finished = 1
 
         return self.percept_now, reward, episode_finished, {"available_actions": self.available_actions}
