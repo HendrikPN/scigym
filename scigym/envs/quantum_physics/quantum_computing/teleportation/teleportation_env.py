@@ -115,7 +115,23 @@ def _measure(psi, i):
 
 
 class TeleportationEnv(gym.Env):
-    """
+    """An environment for discovering the quantum teleportation protocol.
+
+    Starting from an input qubit and a Bell pair, the agent should learn to
+    use a universal gate set and measurements to teleport the state of the
+    input qubit.
+
+    Args:
+        max_actions (int): The environment resets after this many effective actions. Defaults to 40.
+
+    Attributes:
+        n_actions (int): Number of actions. Is 10.
+        action_space (gym.spaces.Space): gym.spaces.Discrete(`n_actions`)
+        observation_space (gym.spaces.Space): gym.spaces.MutliDiscrete([17] * `max_actions`)
+        state (np.ndarray): Current internal quantum state.
+        percept_now (list of ints): Current percept, is an element of the `observation_space`.
+        available_actions (list of ints): These actions are valid for the current state.
+        metadata (dict)
 
     """
     # no rendering available
@@ -124,27 +140,27 @@ class TeleportationEnv(gym.Env):
     def __init__(self, max_actions=40):
         self.n_actions = 10
         self.action_space = gym.spaces.Discrete(self.n_actions)
-        self.max_actions = max_actions
-        self.observation_space = gym.spaces.MultiDiscrete([17] * self.max_actions)
-        self.target = phiplus
-        self.target_rho = np.dot(self.target, _H(self.target))
-        self.state = _tensor(self.target, phiplus)
-        self.percept_now = [NOTHING] * self.max_actions
+        self._max_actions = max_actions
+        self.observation_space = gym.spaces.MultiDiscrete([17] * self._max_actions)
+        self._target = phiplus
+        self._target_rho = np.dot(self._target, _H(self._target))
+        self.state = _tensor(self._target, phiplus)
+        self.percept_now = [NOTHING] * self._max_actions
         self.available_actions = [i for i in range(self.n_actions)]
-        self.actions_taken = 0
+        self._actions_taken = 0
 
     def reset(self):
-        self.target = phiplus
-        self.target_rho = np.dot(self.target, _H(self.target))
-        self.state = _tensor(self.target, phiplus)
-        self.percept_now = [NOTHING] * self.max_actions
+        self._target = phiplus
+        self._target_rho = np.dot(self._target, _H(self._target))
+        self.state = _tensor(self._target, phiplus)
+        self.percept_now = [NOTHING] * self._max_actions
         self.available_actions = [i for i in range(self.n_actions)]
         return self.percept_now, {"available_actions": self.available_actions}
 
     def _check_success(self):
         aux = np.dot(self.state, _H(self.state))
         aux = _ptrace(aux, [1, 2])  # note that 1, 2 in this notation corresponds to qubits 0 and 1
-        return np.allclose(aux, self.target_rho)
+        return np.allclose(aux, self._target_rho)
 
     def _remove_actions(self, actions):
         for action in actions:
@@ -154,11 +170,20 @@ class TeleportationEnv(gym.Env):
                 continue
 
     def _record_action(self, action):
-        self.percept_now[self.actions_taken] = action
-        self.actions_taken += 1
+        self.percept_now[self._actions_taken] = action
+        self._actions_taken += 1
 
     def step(self, action):
-        if action in self.available_actions and self.actions_taken < self.max_actions:
+        """Apply the chosen action.
+
+        Args:
+            action (int): An action in the action space that is performed.
+
+        Returns:
+            tuple: of the form (observation, reward, episode_finished, info)
+
+        """
+        if action in self.available_actions and self._actions_taken < self._max_actions:
             if action in range(7):
                 self._record_action(action)
 
@@ -206,7 +231,7 @@ class TeleportationEnv(gym.Env):
             episode_finished = 0
 
         # if no actions remain, episode is over
-        if not self.available_actions or self.actions_taken >= self.max_actions:
+        if not self.available_actions or self._actions_taken >= self._max_actions:
             episode_finished = 1
 
         return self.percept_now, reward, episode_finished, {"available_actions": self.available_actions}
