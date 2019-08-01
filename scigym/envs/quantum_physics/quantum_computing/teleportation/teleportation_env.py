@@ -145,7 +145,7 @@ class TeleportationEnv(gym.Env):
         self._target = phiplus
         self._target_rho = np.dot(self._target, _H(self._target))
         self.state = _tensor(self._target, phiplus)
-        self.percept_now = [NOTHING] * self._max_actions
+        self.percept_now = np.array([NOTHING] * self._max_actions, dtype=np.int64)
         self.available_actions = [i for i in range(self.n_actions)]
         self._actions_taken = 0
 
@@ -153,9 +153,9 @@ class TeleportationEnv(gym.Env):
         self._target = phiplus
         self._target_rho = np.dot(self._target, _H(self._target))
         self.state = _tensor(self._target, phiplus)
-        self.percept_now = [NOTHING] * self._max_actions
+        self.percept_now = np.array([NOTHING] * self._max_actions, dtype=np.int64)
         self.available_actions = [i for i in range(self.n_actions)]
-        return self.percept_now, {"available_actions": self.available_actions}
+        return self.percept_now
 
     def _check_success(self):
         aux = np.dot(self.state, _H(self.state))
@@ -225,14 +225,14 @@ class TeleportationEnv(gym.Env):
 
         if self._check_success():
             reward = 1
-            episode_finished = 1
+            episode_finished = True
         else:
             reward = 0
-            episode_finished = 0
+            episode_finished = False
 
         # if no actions remain, episode is over
         if not self.available_actions or self._actions_taken >= self._max_actions:
-            episode_finished = 1
+            episode_finished = True
 
         return self.percept_now, reward, episode_finished, {"available_actions": self.available_actions}
 
