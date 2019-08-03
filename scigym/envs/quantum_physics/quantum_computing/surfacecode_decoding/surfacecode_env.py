@@ -102,6 +102,11 @@ class SurfaceCodeEnv(gym.Env):
 		self.lifetime = 0
 
 		self.multi_cycle = True
+		self.seed()
+
+	def seed(self, seed=None):
+		self.np_random, seed = seeding.np_random(seed)
+		return [seed]	
 
 	def reset(self):
 		"""
