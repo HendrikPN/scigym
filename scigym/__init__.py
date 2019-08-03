@@ -4,7 +4,6 @@ import sys
 import warnings
 
 from gym import error
-from gym.utils import reraise
 
 from gym.core import Env, GoalEnv, Wrapper, ObservationWrapper, ActionWrapper, RewardWrapper
 from gym.spaces import Space, Discrete, Box
