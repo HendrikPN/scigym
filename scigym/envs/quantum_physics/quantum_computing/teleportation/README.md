@@ -65,6 +65,9 @@ gate sequence picked by the agent with the ideal channel. We do this by
 initializing the qubit A' in a state where it is entangled with an
 auxiliary qubit in a maximally entangled state Φ<sup>+</sup>.
 
+*Careful:* Because the environment will return `done` as `True` once no valid
+actions remain, this can lead to very short, but unrewarded trials.
+
 #### Discussion
 
 In this formulation the quantum protocol is presented to the agent as essentially
