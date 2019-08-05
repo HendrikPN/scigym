@@ -10,4 +10,5 @@ register(
 register(
     id='teleportation-v0',
     entry_point="scigym.envs.quantum_physics.quantum_computing.teleportation:TeleportationEnv",
+    nondeterministic=True
 )
