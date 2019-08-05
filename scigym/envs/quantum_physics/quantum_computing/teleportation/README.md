@@ -12,7 +12,7 @@ env = scigym.make("teleportation-v0")
 
 The agent is presented with the following situation:
 
-![teleportation](https://user-images.githubusercontent.com/33934646/62476416-3ea60580-b7a7-11e9-9ee2-7bd6d79ce4dd.png)
+<img src="https://user-images.githubusercontent.com/33934646/62476416-3ea60580-b7a7-11e9-9ee2-7bd6d79ce4dd.png" width="200">
 
 where the input qubit is an arbitrary state Ψ.
 
