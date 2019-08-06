@@ -4,9 +4,7 @@ The task in this environment is for the agent to find a protocol that uses an al
 
 An earlier version of this environment has been used in
 > Machine learning for long-distance quantum communication
->
 > Julius Wallnöfer, Alexey A. Melnikov, Wolfgang Dür, Hans J. Briegel
->
 > [arXiv:1904.10797v1 \[quant-ph\]](https://arxiv.org/abs/1904.10797v1)
 
 **Initializing the environment**
