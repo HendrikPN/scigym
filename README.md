@@ -13,7 +13,7 @@ environments)
     />
 </a>
 
-**SciGym is a curated library for reinforcement learning environments in science.** 
+**SciGym is a curated library for reinforcement learning environments in science.**
 This is the `scigym` open-source library which gives you access to a standardized set of science environments.
 Visit our webpage at [scigym.ai]. This website serves as a open-source database for science environments: A port where science and reinforcement learning meet.
 
@@ -48,6 +48,7 @@ You will need `pyglet` to render some environments.
 
 ## What's new
 
+- 2019-08-06: Added [teleportation](https://github.com/HendrikPN/scigym/tree/master/scigym/envs/quantum_physics/quantum_computing/teleportation) environment
 - 2019-07-21: Added standardized unit testing for all scigym environments.
 - 2019-03-04: Added <a href="https://github.com/R-Sweke/gym-surfacecode">surfacecode</a> environment.
 - 2019-02-09: Initial commit. Hello world :)
