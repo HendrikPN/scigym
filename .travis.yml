@@ -2,12 +2,13 @@
 dist: xenial
 language: python
 python: # Only two versions for now
-  - "2.7"
+  - "3.6"
   - "3.7"
 # command to install dependencies
 install:
   - pip install numpy
   - pip install matplotlib
+  - pip install gym
   # install TensorFlow for `surfacecode` environment
   - pip install tensorflow==1.14.0
   - pip install keras==2.2.4
