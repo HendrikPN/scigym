@@ -21,7 +21,8 @@ Visit our webpage at [scigym.ai]. This website serves as a open-source database 
     <img src="https://travis-ci.org/HendrikPN/scigym.svg?branch=master" align="bottom"
     />
 </a>
-[See What's New section below](#what's-new)
+
+[See What's New section below](#whats-new)
 
 ## Basics
 
