@@ -7,7 +7,7 @@ from version import VERSION
 
 # Environment-specific dependencies.
 extras = {
-    'surfacecode': ['tensorflow==1.5', 'keras==2.2.4'],
+    'surfacecode': ['tensorflow==1.14', 'keras==2.2.4'],
     'teleportation': []
 }
 
