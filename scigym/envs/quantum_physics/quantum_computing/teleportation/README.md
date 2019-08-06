@@ -2,6 +2,13 @@
 
 The task in this environment is for the agent to find a protocol that uses an already distributed entangled state to teleport an arbitrary quantum state, i.e. the agent should learn to reconstruct the well-known quantum teleportation protocol when provided with a universal gate set and quantum measurements.
 
+An earlier version of this environment has been used in
+> Machine learning for long-distance quantum communication
+>
+> Julius Wallnöfer, Alexey A. Melnikov, Wolfgang Dür, Hans J. Briegel
+>
+> [arXiv:1904.10797v1 \[quant-ph\]](https://arxiv.org/abs/1904.10797v1)
+
 **Initializing the environment**
 ```python
 import scigym
