@@ -1,16 +1,19 @@
-# sudo: required
 dist: xenial
 language: python
-python: # Only two versions for now
+python:
+  - "2.7"
+  - "3.5"
   - "3.6"
   - "3.7"
-# command to install dependencies
+# install dependencies
 install:
+  # general dependencies
   - pip install numpy
   - pip install matplotlib
   - pip install gym
   # install TensorFlow for `surfacecode` environment
   - pip install tensorflow==1.14.0
   - pip install keras==2.2.4
+# run tests
 script:
   - python -m pytest

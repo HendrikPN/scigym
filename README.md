@@ -17,6 +17,12 @@ environments)
 This is the `scigym` open-source library which gives you access to a standardized set of science environments.
 Visit our webpage at [scigym.ai]. This website serves as a open-source database for science environments: A port where science and reinforcement learning meet.
 
+<a href="https://travis-ci.org/HendrikPN/scigym">
+    <img src="https://travis-ci.org/HendrikPN/scigym.svg?branch=master" align="bottom"
+    />
+</a>
+[See What's New section below](#what's-new)
+
 ## Basics
 
 This project is in line with the policies of the [OpenAI gym]:
@@ -44,10 +50,11 @@ You can perform a minimal install of `scigym` with:
   cd scigym
   pip install -e .
   ```
-You will need `pyglet` to render some environments.
+You will need additional dependencies for some environments.
 
-## What's new
+## What's New
 
+- 2019-08-06 Added [Travis-CI](https://travis-ci.org/HendrikPN/scigym)
 - 2019-08-06: Added [teleportation](https://github.com/HendrikPN/scigym/tree/master/scigym/envs/quantum_physics/quantum_computing/teleportation) environment
 - 2019-07-21: Added standardized unit testing for all scigym environments.
 - 2019-03-04: Added <a href="https://github.com/R-Sweke/gym-surfacecode">surfacecode</a> environment.
