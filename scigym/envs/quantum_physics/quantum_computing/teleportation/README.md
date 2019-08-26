@@ -46,8 +46,8 @@ If qubit B is in state Ψ, the protocol is considered successful and the agent r
 
 The quantum teleportation protocol in this formulation is performed by:
 
-1. Hadamard on qubit A'
-2. CNOT with qubit A' as the source and qubit A as the target
+1. CNOT with qubit A' as the source and qubit A as the target 
+2. Hadamard on qubit A'
 3. Measure qubit A'
 4. Measure qubit A
 
@@ -70,8 +70,9 @@ gate sequence picked by the agent with the ideal channel. We do this by
 initializing the qubit A' in a state where it is entangled with an
 auxiliary qubit in a maximally entangled state Φ<sup>+</sup>.
 
-*Careful:* Because the environment will return `done` as `True` once no valid
-actions remain, this can lead to very short, but unrewarded trials.
+Furthermore, be aware that the environment will return `done` as `True` once no 
+valid actions remain. This can lead to very short, but unrewarded trials, 
+which might be challenging for some reward strategies used by agents.
 
 #### Discussion
 
