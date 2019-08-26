@@ -46,8 +46,8 @@ If qubit B is in state Ψ, the protocol is considered successful and the agent r
 
 The quantum teleportation protocol in this formulation is performed by:
 
-1. Hadamard on qubit A'
-2. CNOT with qubit A' as the source and qubit A as the target
+1. CNOT with qubit A' as the source and qubit A as the target 
+2. Hadamard on qubit A'
 3. Measure qubit A'
 4. Measure qubit A
 
