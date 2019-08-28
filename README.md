@@ -46,7 +46,7 @@ left to you. The following are the `Env` methods you should know:
 
 There are two main options for the installation of `scigym`:
 
-#### A minimal install (recommended)
+#### (a) minimal install (recommended)
 
 This method allows you to install the package with no environment specific dependencies, and later add the dependencies for specific environments as you need them.
 
@@ -64,7 +64,7 @@ To later add the dependencies for a particular `environment_name`, run the follo
   pip install -e .[environment_name]
   ```
 
-#### A full install
+#### (b) full install
 
 This method allows you to install the package, along with all dependencies required for all environments. Be careful, scigym is growing, and this method may install a large number of packages. To view all packages that will be installed during a full install, see the `requirements.txt` file in the root directory. If you wish to perform a full installation you can run:
 
