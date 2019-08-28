@@ -8,7 +8,7 @@ from version import VERSION
 # Environment-specific dependencies.
 extras = {
     'surfacecode': ['tensorflow==1.14', 'keras==2.2.4'],
-    'teleportation': []
+    'teleportation' : []
 }
 
 # Meta dependency groups.
