@@ -95,8 +95,8 @@ In order to add your standardized environment to the scigym package, follow the 
     'foo': ['Dependencies'],
     }
     ```
-
-6. Register your environment `FooEnv` at `scigym/envs/__init__.py`. Take note, that if the environment is non-deterministic then this attribute should be set to true, as determinism is verified by the unit tests. :
+6. Additionally, in order to allow automated unit testing of your environment, add any environment specific dependencies into the file `test_requirements.txt` in the root directory of the package.
+7. Register your environment `FooEnv` at `scigym/envs/__init__.py`. Take note, that if the environment is non-deterministic then this attribute should be set to true, as determinism is verified by the unit tests. :
 
     ```python
     register(
@@ -106,18 +106,18 @@ In order to add your standardized environment to the scigym package, follow the 
     )
     ```
 
-7. Import your environment in `scigym/envs/foo/__init__.py`:
+8. Import your environment in `scigym/envs/foo/__init__.py`:
 
     ```python
     from scigym.envs.foo.foo_env import FooEnv
     ```
 
-8. If your environment requires unit tests not covered by `scigym/envs/tests/test_envs.py` and `scigym/envs/tests/test_determinism.py` then add an environment specific unit test into the folder `scigym/envs/tests/`. Scigym uses `pytest` for all unit tests.
+9. If your environment requires unit tests not covered by `scigym/envs/tests/test_envs.py` and `scigym/envs/tests/test_determinism.py` then add an environment specific unit test into the folder `scigym/envs/tests/`. Scigym uses `pytest` for all unit tests.
 
-9. Make a notification that a new environment has been included in the README.md under "What's new". 
-10. If your environment should be registered under a licence other than MIT, publish your licence statement in the LICENCE file under "Special Environments".
-11. Create a branch `environment/foo` and commit the changes there.
-12. Create a pull request to the master branch or a new branch at https://github.com/hendrikpn/scigym.
+10. Make a notification that a new environment has been included in the README.md under "What's new". 
+11. If your environment should be registered under a licence other than MIT, publish your licence statement in the LICENCE file under "Special Environments".
+12. Create a branch `environment/foo` and commit the changes there.
+13. Create a pull request to the master branch or a new branch at https://github.com/hendrikpn/scigym.
 
 
   [OpenAI gym]: https://github.com/openai/gym
