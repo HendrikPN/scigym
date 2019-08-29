@@ -95,7 +95,7 @@ In order to add your standardized environment to the scigym package, follow the 
     'foo': ['Dependencies'],
     }
     ```
-6. Additionally, in order to allow automated unit testing of your environment, add any environment specific dependencies into the file `test_requirements.txt` in the root directory of the package.
+6. Additionally, in order to allow automated unit testing of your environment, add any environment specific dependencies into the file `requirements.txt` in the root directory of the package.
 7. Register your environment `FooEnv` at `scigym/envs/__init__.py`. Take note, that if the environment is non-deterministic then this attribute should be set to true, as determinism is verified by the unit tests. :
 
     ```python

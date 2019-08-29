@@ -66,7 +66,7 @@ To later add the dependencies for a particular `environment_name`, run the follo
 
 #### (b) full install
 
-This method allows you to install the package, along with all dependencies required for all environments. Be careful, scigym is growing, and this method may install a large number of packages. To view all packages that will be installed during a full install, see the `test_requirements.txt` file in the root directory. If you wish to perform a full installation you can run:
+This method allows you to install the package, along with all dependencies required for all environments. Be careful, scigym is growing, and this method may install a large number of packages. To view all packages that will be installed during a full install, see the `requirements.txt` file in the root directory. If you wish to perform a full installation you can run:
 
   ```sh
   git clone https://github.com/hendrikpn/scigym.git
