@@ -6,13 +6,7 @@ python:
   - "3.7"
 # install dependencies
 install:
-  # general dependencies
-  - pip install numpy
-  - pip install matplotlib
-  - pip install gym
-  # install TensorFlow for `surfacecode` environment
-  - pip install tensorflow==1.14.0
-  - pip install keras==2.2.4
+  - pip install -r requirements.txt
 # run tests
 script:
   - python -m pytest
