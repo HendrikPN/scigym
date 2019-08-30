@@ -9,7 +9,7 @@ environments)
 # SciGym
 
 <a href="https://scigym.ai">
-    <img src="./assets/scigym-logo.png" width="120px" align="bottom"
+    <img src="https://raw.githubusercontent.com/HendrikPN/scigym/master/assets/scigym-logo.png" width="120px" align="bottom"
     />
 </a>
 
@@ -53,13 +53,21 @@ This method allows you to install the package with no environment specific depen
 You can perform a minimal install of `scigym` with:
 
   ```sh
+  pip install scigym
+  ```
+or
+  ```sh
   git clone https://github.com/hendrikpn/scigym.git
   cd scigym
   pip install -e .
   ```
 
-To later add the dependencies for a particular `environment_name`, run the following command from the folder containing `setup.py`:
+To later add the dependencies for a particular `environment_name`, run the following command:
 
+  ```sh
+  pip install scigym[environment_name]
+  ```
+or from the folder containing `setup.py`
   ```sh
   pip install -e .[environment_name]
   ```
@@ -69,15 +77,28 @@ To later add the dependencies for a particular `environment_name`, run the follo
 This method allows you to install the package, along with all dependencies required for all environments. Be careful, scigym is growing, and this method may install a large number of packages. To view all packages that will be installed during a full install, see the `requirements.txt` file in the root directory. If you wish to perform a full installation you can run:
 
   ```sh
+  pip install scigym['all']
+  ```
+or
+  ```sh
   git clone https://github.com/hendrikpn/scigym.git
   cd scigym
-  pip install -e .[all]
+  pip install -e .['all']
   ```
+
+## Available Environments
+
+At this point we have the following environments available for you to play with:
+
+- [`surfacecode-decoding`](https://github.com/HendrikPN/scigym/tree/master/scigym/envs/quantum_physics/quantum_computing/surfacecode_decoding)
+- [`teleportation`](https://github.com/HendrikPN/scigym/tree/master/scigym/envs/quantum_physics/quantum_computing/teleportation)
 
 ## What's New
 
-- 2019-08-06 Added [Travis-CI](https://travis-ci.org/HendrikPN/scigym)
-- 2019-08-06: Added [teleportation](https://github.com/HendrikPN/scigym/tree/master/scigym/envs/quantum_physics/quantum_computing/teleportation) environment
+- 2019-08-30 This is `scigym` version 0.0.2!
+- 2019-08-30 `scigym` is now available as a package on [PyPI](https://pypi.org/project/scigym/).
+- 2019-08-06 Added [Travis-CI](https://travis-ci.org/HendrikPN/scigym).
+- 2019-08-06: Added [teleportation](https://github.com/HendrikPN/scigym/tree/master/scigym/envs/quantum_physics/quantum_computing/teleportation) environment.
 - 2019-07-21: Added standardized unit testing for all scigym environments.
 - 2019-03-04: Added <a href="https://github.com/R-Sweke/gym-surfacecode">surfacecode</a> environment.
 - 2019-02-09: Initial commit. Hello world :)
