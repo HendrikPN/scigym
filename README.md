@@ -8,7 +8,7 @@ environments)
 
 # SciGym
 
-<a href="https://scigym.ai">
+<a href="https://www.scigym.net">
     <img src="https://raw.githubusercontent.com/HendrikPN/scigym/master/assets/scigym-logo.png" width="120px" align="bottom"
     />
 </a>
@@ -105,5 +105,5 @@ At this point we have the following environments available for you to play with:
 
   [image]: https://img.shields.io/badge/Supported%20By-UNITARY%20FUND-brightgreen.svg?style=for-the-badge
   [OpenAI gym]: https://github.com/openai/gym
-  [scigym.ai]: https://scigym.ai
+  [scigym.ai]: https://www.scigym.net
   [Env]: https://github.com/openai/gym/blob/master/gym/core.py
