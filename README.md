@@ -95,6 +95,7 @@ At this point we have the following environments available for you to play with:
 
 ## What's New
 
+- 2019-10-10 [scigym.ai] is online!
 - 2019-08-30 This is `scigym` version 0.0.2!
 - 2019-08-30 `scigym` is now available as a package on [PyPI](https://pypi.org/project/scigym/).
 - 2019-08-06 Added [Travis-CI](https://travis-ci.org/HendrikPN/scigym).
