@@ -1,7 +1,8 @@
 # The Toric Game
 
-This repository implements a reinforcement learning environment for the toric code,
-with perspectives (see [arxiv](arxiv.org)), on which quantum error correction can 
+This repository implements a reinforcement learning environment for learning to
+perform quantum error decoding on the toric code with depolarizing noise.
+Game states are represented using perspectives from [here](arxiv.org)
 be trained.
 
 ## Usage
@@ -11,14 +12,8 @@ Using [SciGym](https://github.com/hendrikpn/scigym), you can initialize this env
 **Initializing the environment**
 ```python
 import scigym
-env = scigym.make("toricgame-v0")
+env = scigym.make("toricgame-v0", board_size=3, error_model=0, error_rate = 0.05)
 ```
 
 ## Environment description
 TODO
-
-## TRAINING
-Launch the file train.py with corresponding arguments (see in the file)
-
-## EVALUATION
-Launch the file evaluate.py with corresponding arguments (see in the file)
