@@ -12,6 +12,7 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), encoding='utf-8'
 # Environment-specific dependencies.
 extras = {
     'surfacecode-decoding': ['tensorflow==1.14', 'keras==2.2.4'],
+    'toricgame': [],
     'teleportation' : []
 }
 
