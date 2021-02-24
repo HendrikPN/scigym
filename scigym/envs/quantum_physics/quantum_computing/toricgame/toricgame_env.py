@@ -12,12 +12,17 @@ class ToricGameEnv(gym.Env):
     '''
     metadata = {'render.modes': ['human']}
 
-    def __init__(self, code_distance, error_model, channels, use_memory):
+    def __init__(self, 
+                 code_distance=3, 
+                 error_model=1, 
+                 channels=[0,1], 
+                 error_rate = 1.,
+                 use_memory=True):
         """
         Args:
             opponent: Fixed
-            code_distance: the code distance
-            error_model: 0 - bitflip, 1 - depolarizing
+            code_distance: the code distance. Default: 3
+            error_model: 0 - bitflip, 1 - depolarizing. Default: 0
             channels: list for indicating which operators
                       to use in the state representation.
                       [0] - plaquettes only
@@ -30,6 +35,7 @@ class ToricGameEnv(gym.Env):
         self.error_model = error_model
         self.channels = channels
         self.memory = use_memory
+        self.current_error_rate = error_rate
 
         # Keep track of the moves
         self.qubits_flips = [[],[]]
@@ -37,10 +43,7 @@ class ToricGameEnv(gym.Env):
 
         # Empty State
         self.state = Board(self.board_size)
-        self.done = None
-
-        # No error rate
-        self.current_error_rate = 0
+        self.done = False
 
         # Build the perspective slices
         self._build_perspectives()
@@ -55,27 +58,11 @@ class ToricGameEnv(gym.Env):
         self.observation_space = gym.spaces.Box(low=-1, high=1, shape=shape, dtype=np.uint8)
 
     def reset(self):
-        self.generate_errors(self.current_error_rate)
-
-    def generate_errors(self, error_rate):
-        self.current_error_rate = error_rate
-
-        # Reset the board state
-        self.state.reset()
-
-        # Let the "opponent" do it's initial evil moves :)
-        self.qubits_flips = [[],[]]
-        self.initial_qubits_flips = [[],[]]
-        self._set_initial_errors(self.current_error_rate)
-
-        self.done = self.state.is_terminal()
-        self.reward = 0
-        if self.done:
-            self.reward = 1
-            if self.state.has_logical_error(self.initial_qubits_flips):
-                self.reward = -1
-
-        return self.state.encode(self.channels, self.memory)
+        '''
+        Return:
+            observation: board encoding
+        '''
+        return self._generate_errors(self.current_error_rate)
 
     def step(self, action, without_illegal_actions=False):
         '''
@@ -94,8 +81,12 @@ class ToricGameEnv(gym.Env):
             self.reward = 1
             return self.state.encode(self.channels, self.memory), 1., True, {'state': self.state, 'message':"success"}
 
+        # Get pauli operator and location from action
+        pauli_opt = action % 3
+        location = int(action/3.) # TODO must encode the coord as in `act`
+
         # Check if we flipped twice the same qubit
-        pauli_X_flip = (pauli_opt==0 or pauli_opt==2)
+        pauli_X_flip = (pauli_opt==0 or pauli_opt==2) ## TODO not defined
         pauli_Z_flip = (pauli_opt==1 or pauli_opt==2)
 
         # Game is lost if we repeat an action if we are playing and not training
@@ -125,6 +116,30 @@ class ToricGameEnv(gym.Env):
             return self.state.encode(self.channels, self.memory), -1.0, True, {'state': self.state, 'message':"logical_error"}
         else:
             return self.state.encode(self.channels, self.memory), 1.0, True, {'state': self.state, 'message':"success"}
+
+    def _generate_errors(self, error_rate):
+        '''
+        Return:
+            observation: board encoding used for reset
+        '''
+        self.current_error_rate = error_rate
+
+        # Reset the board state
+        self.state.reset()
+
+        # Let the "opponent" do it's initial evil moves :)
+        self.qubits_flips = [[],[]]
+        self.initial_qubits_flips = [[],[]]
+        self._set_initial_errors(self.current_error_rate)
+
+        self.done = self.state.is_terminal()
+        self.reward = 0
+        if self.done:
+            self.reward = 1
+            if self.state.has_logical_error(self.initial_qubits_flips):
+                self.reward = -1
+
+        return self.state.encode(self.channels, self.memory)
 
     def _set_initial_errors(self, error_rate):
         ''' Set random initial errors with an %error_rate rate
@@ -156,8 +171,8 @@ class ToricGameEnv(gym.Env):
         op_pos={}
         qubit_pos, op_pos[0], op_pos[1] = Board.component_positions(size)
 
-        input_dim=len(channels)*size**2
-        if self.use_memory:
+        input_dim=len(self.channels)*size**2
+        if self.memory:
             input_dim *= 3
 
         indices = np.arange(input_dim)
@@ -165,12 +180,12 @@ class ToricGameEnv(gym.Env):
         # Loading the slices of the input
         slices={}
         index0, dim=0,0
-        for channel in channels:
+        for channel in self.channels:
             dim=size**2
             slices['op_'+str(channel)]=indices[index0:index0+dim].reshape(size, size)
             index0+=dim
 
-            if self.use_memory:
+            if self.memory:
                 dim=2*size**2
                 slices['qubit_'+str(channel)]=indices[index0:index0+dim]
                 index0+=dim
@@ -460,7 +475,7 @@ class Board(object):
         ''' representation of the board class
             print out board_state
         '''
-        return qubit_values, op_values
+        return str(self.qubit_values)+str(self.op_values)
 
     def encode(self, channels, use_memory):
         '''Return: np array
