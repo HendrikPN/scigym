@@ -6,7 +6,7 @@ gym==0.14.0
 
 # surfacecode environment
 
-tensorflow==1.14.0
+tensorflow==2.5.0
 Keras==2.2.4
 
 
