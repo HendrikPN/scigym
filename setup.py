@@ -11,7 +11,6 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), encoding='utf-8'
 
 # Environment-specific dependencies.
 extras = {
-    'surfacecode-decoding': ['tensorflow==1.14', 'keras==2.2.4'],
     'teleportation' : []
 }
 
@@ -33,7 +32,7 @@ setup(name='scigym',
       zip_safe=False,
       install_requires=['gym==0.18.0'],
       extras_require=extras,
-      package_data={'scigym': ['envs/quantum_physics/quantum_computing/surfacecode_decoding/referee_decoders/*']},
+      package_data={'scigym': []},
       tests_require=['pytest'],
       long_description=long_description,
       long_description_content_type='text/markdown',
