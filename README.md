@@ -90,7 +90,6 @@ or
 
 At this point we have the following environments available for you to play with:
 
-- [`surfacecode-decoding`](https://github.com/HendrikPN/scigym/tree/master/scigym/envs/quantum_physics/quantum_computing/surfacecode_decoding)
 - [`teleportation`](https://github.com/HendrikPN/scigym/tree/master/scigym/envs/quantum_physics/quantum_computing/teleportation)
 
 ## What's New
