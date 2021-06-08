@@ -36,11 +36,11 @@ def test_env(spec):
     env.close()
 
 # Run a longer rollout on specified environments:
-# Currently onlu surfacecode-decoding is tested in this way.
+# Currently only teleportation is tested in this way.
 # This list can be extended manually, or we can choose to perform longer rollouts on all environments.
 
 def test_random_rollout():
-    for env in [envs.make('surfacecode-decoding-v0')]:
+    for env in [envs.make('teleportation-v0')]:
         agent = lambda ob: env.action_space.sample()
         ob = env.reset()
         for _ in range(10):

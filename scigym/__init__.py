@@ -5,8 +5,8 @@ import warnings
 
 from gym import error
 
-from gym.core import Env, GoalEnv, Wrapper, ObservationWrapper, ActionWrapper, RewardWrapper
-from gym.spaces import Space, Discrete, Box
+# from gym.core import Env, GoalEnv, Wrapper, ObservationWrapper, ActionWrapper, RewardWrapper
+# from gym.spaces import Space, Discrete, Box
 from gym.envs import make, spec
 from gym import logger
 
@@ -18,9 +18,9 @@ from scigym.version import VERSION as __version__
 __all__ = [
     # "Env", 
     # "Wrapper", 
-    "Space", 
+    # "Space", 
     "make", 
     "spec",
-    "Discrete",
-    "Box"
+    # "Discrete",
+    # "Box"
     ]
