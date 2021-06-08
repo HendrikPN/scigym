@@ -31,7 +31,7 @@ setup(name='scigym',
       packages=[package for package in find_packages()
                 if package.startswith('scigym')],
       zip_safe=False,
-      install_requires=['gym==0.14.0'],
+      install_requires=['gym==0.18.0'],
       extras_require=extras,
       package_data={'scigym': ['envs/quantum_physics/quantum_computing/surfacecode_decoding/referee_decoders/*']},
       tests_require=['pytest'],

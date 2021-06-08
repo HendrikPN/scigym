@@ -1,6 +1,6 @@
 # ----- general package requirements -------------
 
-gym==0.14.0
+gym==0.18.0
 
 # ----- environment specific requirements  -------
 
