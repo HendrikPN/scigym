@@ -91,9 +91,11 @@ or
 At this point we have the following environments available for you to play with:
 
 - [`teleportation`](https://github.com/HendrikPN/scigym/tree/master/scigym/envs/quantum_physics/quantum_computing/teleportation)
+- [`entangled-ions`](https://github.com/HendrikPN/scigym/tree/master/scigym/envs/quantum_physics/quantum_information/entangled_ions)
 
 ## What's New
 
+- 2021-06-09 Added [entangled-ions](https://github.com/HendrikPN/scigym/tree/master/scigym/envs/quantum_physics/quantum_information/entangled_ions) environment.
 - 2021-06-08 This is `scigym` version 0.0.3! Now compatible with gym version 0.18.0
 - 2019-10-10 [scigym.ai] is online!
 - 2019-08-30 This is `scigym` version 0.0.2!
