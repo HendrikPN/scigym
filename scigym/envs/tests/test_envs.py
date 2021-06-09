@@ -41,11 +41,12 @@ def test_env(spec):
 def test_random_rollout():
     for env in [envs.make('teleportation-v0'), envs.make('entangled-ions-v0')]:
         agent = lambda ob: env.action_space.sample()
-        ob = env.reset()
         for _ in range(10):
-            assert env.observation_space.contains(ob)
-            a = agent(ob)
-            assert env.action_space.contains(a)
-            (ob, _reward, done, _info) = env.step(a)
-            if done: break
-        env.close()
+            ob = env.reset()
+            for _ in range(10):
+                assert env.observation_space.contains(ob)
+                a = agent(ob)
+                assert env.action_space.contains(a)
+                (ob, _reward, done, _info) = env.step(a)
+                if done: break
+            env.close()

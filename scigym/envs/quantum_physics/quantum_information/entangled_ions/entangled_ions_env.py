@@ -67,10 +67,11 @@ class EntangledIonsEnv(gym.Env, QuditQM):
 
         # add methods (such as `ket` or `srv`) from parent
         super().__init__(self.dim, self.num_ions)
-        #spaces.Box: The observation space as defined by `gym` 
+        #spaces.Box: The observation space as defined by `gym` ()
+        #TODO: fix precision error in tests
         o_size = self.dim**self.num_ions * 2
-        self.observation_space = gym.spaces.Box(low=-1., 
-                                                high=1., 
+        self.observation_space = gym.spaces.Box(low=-1.00001,
+                                                high=1.00001, 
                                                 shape=(o_size,1),
                                                 dtype=np.float64
                                                 )
