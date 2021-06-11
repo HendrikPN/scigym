@@ -22,8 +22,8 @@ class ToricGameEnv(gym.Env):
         self.board_size = board_size
         self.error_rate = error_rate
         self.error_model = error_model
-        self.allow_illegal_actions = allow_illegal_actions 
-        
+        self.allow_illegal_actions = allow_illegal_actions
+
         # Create a new board
         self.state = Board(self.board_size)
         # Reset the environment
@@ -33,17 +33,17 @@ class ToricGameEnv(gym.Env):
         num_qubits_to_act_on = 2*self.board_size**2
         num_pauli_operators = 1 if error_model == 0 else 3
         self.action_space = gym.spaces.Discrete(num_qubits_to_act_on*num_pauli_operators)
-        
+
         # Compute the observation space
         self.observation_space = gym.spaces.MultiBinary(len(initial_state)) #gym.spaces.Box(low=0.0, high=1.0, shape=(len(initial_state),), dtype=np.float32)
-        
+
         # Game over after max number of steps
         self.max_steps = num_qubits_to_act_on
 
-    def reset(self):        
+    def reset(self):
         # Reset the board state
         self.state.reset()
-        
+
         # Reset number of steps taken
         self.num_steps_taken = 0
 
@@ -64,7 +64,7 @@ class ToricGameEnv(gym.Env):
 
         return self.state.encode(self.error_model)
 
-    def step(self, action): 
+    def step(self, action):
         '''
         Args:
             action: the action to take (will be decompsed into location and operator)
@@ -75,27 +75,27 @@ class ToricGameEnv(gym.Env):
             reward: reward of the game
             done: boolean indicating whether the game is over or not
             info: state dict with possible extra info
-        '''        
+        '''
         if( self.num_steps_taken > self.max_steps ):
             return self.state.encode(self.error_model), -1.0, True, {'state': self.state, 'message':"too many steps"}
-        
+
         # Increase step number
         self.num_steps_taken += 1
-        
+
         # Convert action integer to coordinates and operator
         if( self.error_model == 0 ):
             location = self.state.qubit_pos[action]
             pauli_opt = 0
-            
+
         if( self.error_model == 1 ):
             pauli_opt = action // (2*self.board_size**2)
             action = action % (2*self.board_size**2)
             location = self.state.qubit_pos[action]
-        
+
         # Get operator
         pauli_X_flip = (pauli_opt==0 or pauli_opt==2)
         pauli_Z_flip = (pauli_opt==1 or pauli_opt==2)
-        
+
         # If we end after an illegal action...
         if not self.allow_illegal_actions:
             if pauli_X_flip and location in self.qubits_flips[0]:
@@ -108,7 +108,7 @@ class ToricGameEnv(gym.Env):
             self.qubits_flips[0].append(location)
         if pauli_Z_flip:
             self.qubits_flips[1].append(location)
-            
+
         # Apply the operator
         self.state.act(location, pauli_opt)
 
@@ -121,15 +121,15 @@ class ToricGameEnv(gym.Env):
             return self.state.encode(self.error_model), -1.0, True, {'state': self.state, 'message':"logical_error"}
         else:
             return self.state.encode(self.error_model), 1.0, True, {'state': self.state, 'message':"success"}
-                
+
     def _set_initial_errors(self, error_rate=None):
-        ''' 
+        '''
             Set random initial errors with an %error_rate rate
             Report only the syndrome
         '''
         # Use the instance error rate if not specified (i.e. specify to override)
         error_rate = self.error_rate if error_rate == None else error_rate
-        
+
         for q in self.state.qubit_pos:
             if np.random.rand() < error_rate:
                 # Bitflip
@@ -151,7 +151,7 @@ class ToricGameEnv(gym.Env):
 
         # Now unflip the qubits, they're a secret
         self.state.qubit_values = np.zeros((2, 2*self.board_size*self.board_size))
-            
+
     def render(self, mode="human"):
         fig, ax = plt.subplots()
         a=1/(2*self.board_size)
@@ -196,11 +196,11 @@ class ToricGameEnv(gym.Env):
         ax.set_yticks([])
         plt.axis('off')
         plt.show()
-        
+
     def close(self):
         self.state = None
 
-    
+
 class Board(object):
     '''
     Basic Implementation of a ToricGame Board, actions are int [0,2*board_size**2)
@@ -251,11 +251,11 @@ class Board(object):
         self.op_values = np.zeros((2, self.size*self.size))
 
         # Location of syndromes
-        self.syndrome_pos = [] 
+        self.syndrome_pos = []
 
     def act(self, coord, operator, update_syndrome = True):
         '''
-            Args: 
+            Args:
             coord: real-space location (x,y) of the qubit to flip
             operator: the operator to apply to the qubit (Pauli X, Y, or Z)
         '''
@@ -274,7 +274,7 @@ class Board(object):
 
         if not update_syndrome:
             return
-            
+
         # Update the syndrome measurements
         # Only need to incrementally change
         # Find plaquettes that the flipped qubit is a part of
@@ -356,8 +356,8 @@ class Board(object):
     def encode(self, error_model):
         '''
         Returns a representation of the board
-        
-        Args: 
+
+        Args:
             error_model: 0 for uncorrelated (bitflip), 1 for depolarizing
         '''
         img = np.array([])
@@ -365,7 +365,7 @@ class Board(object):
         img = np.concatenate((img, self.op_values[0]))
         # Add z-values of qubits
         img = np.concatenate((img, self.qubit_values[0]))
-        
+
         if error_model == 1:
             # Add star values
             img = np.concatenate((img, self.op_values[1]))
