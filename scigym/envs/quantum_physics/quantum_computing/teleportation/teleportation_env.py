@@ -52,7 +52,7 @@ def _ptrace(rho, sys):
 
 
 Ha = 1 / np.sqrt(2) * np.array([[1, 1], [1, -1]])  # Hadamard gate
-T = np.array([[1, 0], [0, 1 / np.sqrt(2) * (1 + 1j)]], dtype=np.complex)
+T = np.array([[1, 0], [0, 1 / np.sqrt(2) * (1 + 1j)]], dtype=complex)
 CNOT = np.array([[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 1], [0, 0, 1, 0]])
 Id = np.eye(2)
 
@@ -238,3 +238,6 @@ class TeleportationEnv(gym.Env):
 
     def render(self):
         raise NotImplementedError
+
+    def close(self):
+        pass
