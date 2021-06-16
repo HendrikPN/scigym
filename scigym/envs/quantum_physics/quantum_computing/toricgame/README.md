@@ -11,21 +11,39 @@ Using [SciGym](https://github.com/hendrikpn/scigym), you can initialize this env
 **Initializing the environment**
 ```python
 import scigym
-env = scigym.make("toricgame-v0", board_size=3, error_model=0)
-
-# Add errors (stores default error rate, so calling env.reset() reuses this error rate)
-current_state = env.generate_errors(error_rate = 0.05)
-
-# Using perspectives is not required at all, but if you'd like to, here's how:
-locations, actions, action_probabilities=[], [], []
-for p in env.state.syndrome_pos:
-    # Get the indices for the qubit array, as if 'plaq' where at the center
-    indices = env.get_perspective(p)
-    # Update the input
-    input = current_state[indices]
-    # Ask the network for the action probabilities
-    action_probabilities += list(nn.activate(input)) # nn is your network
+KWARGS = {'board_size': 3, 'error_model': 0, 'error_rate': 0.001}
+env = scigym.make("toricgame-v0", **KWARGS)
 ```
 
 ## Environment description
-Work In Progress
+The player is tasked to correct errors in a quantum error correction
+code based on the toric code by applying Pauli operators while only
+observing error syndromes.
+
+## Example for Human Play
+The following code can be used to play the game if the environment has already
+been initialized.
+
+```python
+# Initialize a game that is not already solved
+observation = env.reset()
+    
+# Render the initial state
+env.render()
+
+done = False
+while not done:
+    action = int(input(f"Pick action from {env.action_space.n} actions: "))
+    observation, reward, done, info = env.step(action)
+    env.render()
+
+print("Combined with the original physical qubit errors, this is the total error string:")
+for q in env.initial_qubits_flips[0]:
+    env.state.act(q, 0, update_syndrome=False)
+env.render()
+    
+if reward == 1:
+    print("You win!")
+else: 
+    print("You've lost")
+```

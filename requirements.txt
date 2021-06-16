@@ -3,3 +3,6 @@
 gym==0.18.0
 
 # ----- environment specific requirements  -------
+
+# toricgame
+matplotlib==3.4.2 # for rendering only

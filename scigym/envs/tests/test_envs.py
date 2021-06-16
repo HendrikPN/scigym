@@ -39,7 +39,9 @@ def test_env(spec):
 # This list can be extended manually, or we can choose to perform longer rollouts on all environments.
 
 def test_random_rollout():
-    for env in [envs.make('teleportation-v0'), envs.make('entangled-ions-v0')]:
+    for env in [envs.make('teleportation-v0'), 
+                envs.make('entangled-ions-v0'), 
+                envs.make('toricgame-v0')]:
         agent = lambda ob: env.action_space.sample()
         for _ in range(10):
             ob = env.reset()

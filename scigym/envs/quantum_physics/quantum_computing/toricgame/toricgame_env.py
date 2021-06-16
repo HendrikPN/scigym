@@ -4,26 +4,40 @@ import numpy as np
 import gym
 from gym.utils import seeding
 import sys, os
-import matplotlib.pyplot as plt
 
 ### Environment
 class ToricGameEnv(gym.Env):
-    '''
-    ToricGameEnv environment. Effective single player game.
-    '''
-
-    def __init__(self, board_size, error_rate, error_model, allow_illegal_actions = False):
+    def __init__(self, **kwargs):
         """
+        ToricGameEnv environment. Effective single player game.
+        The player is tasked to correct errors in a quantum error correction
+        code based on the toric code by applying Pauli operators while only
+        observing error syndromes.
+
+        Corresponding whitepaper can be found on arXiv:
+        [https://arxiv.org/abs/2101.08093](https://arxiv.org/abs/2101.08093)
+
         Args:
-            board_size: Size of the Toric code (distance)
-            error_rate: The physical qubit error rate
-            error_model: 0 for bitflip, or 1 for depolarizing
+            board_size (int): Size of the Toric code (distance). Defaults to 3.
+            error_rate (float): The physical qubit error rate. Defaults to 0.01.
+            error_model: 0 for bitflip, or 1 for depolarizing. Defaults to 1.
         """
-        self.board_size = board_size
-        self.error_rate = error_rate
-        self.error_model = error_model
-        self.allow_illegal_actions = allow_illegal_actions
-
+        if 'board_size' in kwargs and type(kwargs['board_size']) is int:
+            setattr(self, 'board_size', kwargs['board_size'])
+        else:
+            setattr(self, 'board_size', 5)
+        if 'error_rate' in kwargs and type(kwargs['error_rate']) is float:
+            setattr(self, 'error_rate', kwargs['error_rate'])
+        else:
+            setattr(self, 'error_rate', 0.01)
+        if 'error_model' in kwargs and kwargs['error_model'] in [0,1]:
+            setattr(self, 'error_model', kwargs['error_model'])
+        else:
+            setattr(self, 'error_model', 1)
+        if 'allow_illegal_actions' in kwargs and type(kwargs['allow_illegal_actions']) is bool:
+            setattr(self, 'allow_illegal_actions', kwargs['allow_illegal_actions'])
+        else:
+            setattr(self, 'allow_illegal_actions', False)
         # Create a new board
         self.state = Board(self.board_size)
         # Reset the environment
@@ -31,7 +45,7 @@ class ToricGameEnv(gym.Env):
 
         # Compute the action space
         num_qubits_to_act_on = 2*self.board_size**2
-        num_pauli_operators = 1 if error_model == 0 else 3
+        num_pauli_operators = 1 if self.error_model == 0 else 3
         self.action_space = gym.spaces.Discrete(num_qubits_to_act_on*num_pauli_operators)
 
         # Compute the observation space
@@ -39,6 +53,9 @@ class ToricGameEnv(gym.Env):
 
         # Game over after max number of steps
         self.max_steps = num_qubits_to_act_on
+
+        # Checks whether game is currently viewed.
+        self.viewer = False
 
     def reset(self):
         # Reset the board state
@@ -153,6 +170,16 @@ class ToricGameEnv(gym.Env):
         self.state.qubit_values = np.zeros((2, 2*self.board_size*self.board_size))
 
     def render(self, mode="human"):
+        if not self.viewer:
+            try:
+                global plt
+                import matplotlib.pyplot as plt
+                self.viewer = True
+            except ImportError as e:
+                raise ImportError('''
+                Cannot import matplotlib.
+                HINT: you can install matplotlib via `pip install matplotlib`. 
+                ''')
         fig, ax = plt.subplots()
         a=1/(2*self.board_size)
 
@@ -198,7 +225,7 @@ class ToricGameEnv(gym.Env):
         plt.show()
 
     def close(self):
-        self.state = None
+        self.viewer = None
 
 
 class Board(object):
