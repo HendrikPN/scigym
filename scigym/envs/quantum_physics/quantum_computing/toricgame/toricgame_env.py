@@ -152,8 +152,8 @@ class ToricGameEnv(gym.Env):
 
     def _set_initial_errors(self, error_rate=None):
         '''
-            Set random initial errors with an %error_rate rate
-            Report only the syndrome
+        Set random initial errors with an %error_rate rate
+        Report only the syndrome
         '''
         # Use the instance error rate if not specified (i.e. specify to override)
         error_rate = self.error_rate if error_rate == None else error_rate
@@ -180,7 +180,13 @@ class ToricGameEnv(gym.Env):
         # Now unflip the qubits, they're a secret
         self.state.qubit_values = np.zeros((2, 2*self.board_size*self.board_size))
 
-    def render(self, mode="human"):
+    def render(self, mode="human", time=5):
+        """
+        Args:
+            mode (str): The render mode. Defaults to 'human'
+            time (int): The time in seconds to watch the current state. 
+                        Defaults to 5
+        """
         if not self.viewer:
             try:
                 global plt
@@ -233,7 +239,9 @@ class ToricGameEnv(gym.Env):
         ax.set_xticks([])
         ax.set_yticks([])
         plt.axis('off')
-        plt.show()
+        plt.show(block=False)
+        plt.pause(time)
+        plt.close()
 
     def close(self):
         self.viewer = None
