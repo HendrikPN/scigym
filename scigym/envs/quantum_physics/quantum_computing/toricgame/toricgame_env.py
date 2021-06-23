@@ -7,6 +7,7 @@ import sys, os
 
 ### Environment
 class ToricGameEnv(gym.Env):
+    metadata = {'render.modes': ['human']}
     def __init__(self, **kwargs):
         """
         ToricGameEnv environment. Effective single player game.
@@ -14,13 +15,23 @@ class ToricGameEnv(gym.Env):
         code based on the toric code by applying Pauli operators while only
         observing error syndromes.
 
+        The player wins only if all syndromes have been removed and no logical
+        error was introduced. 
+        The player looses if...
+            (1) ... they remove all syndromes but introduce a logical error.
+            (2) ... exceed the maximum number of steps.
+            (3) ... they perform the same action twice 
+                (if `allow_illegal_actions=False`).
+
         Corresponding whitepaper can be found on arXiv:
         [https://arxiv.org/abs/2101.08093](https://arxiv.org/abs/2101.08093)
 
         Args:
             board_size (int): Size of the Toric code (distance). Defaults to 3.
             error_rate (float): The physical qubit error rate. Defaults to 0.01.
-            error_model: 0 for bitflip, or 1 for depolarizing. Defaults to 1.
+            error_model (0,1): 0 for bitflip, or 1 for depolarizing. Defaults to 1.
+            allow_illegal_actions (bool): Allows to perform same action twice.
+                                          Defaults to False. 
         """
         if 'board_size' in kwargs and type(kwargs['board_size']) is int:
             setattr(self, 'board_size', kwargs['board_size'])
