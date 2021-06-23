@@ -236,7 +236,7 @@ class TeleportationEnv(gym.Env):
 
         return self.percept_now, reward, episode_finished, {"available_actions": self.available_actions}
 
-    def render(self):
+    def render(self, mode=None):
         raise NotImplementedError
 
     def close(self):
