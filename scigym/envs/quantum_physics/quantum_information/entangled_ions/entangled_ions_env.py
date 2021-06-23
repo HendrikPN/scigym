@@ -6,6 +6,7 @@ from scigym.envs.quantum_physics.quantum_information.entangled_ions.operations.q
 from scigym.envs.quantum_physics.quantum_information.entangled_ions.operations.laser_gates import LaserGates
 
 class EntangledIonsEnv(gym.Env, QuditQM):
+    metadata = {'render.modes': []}
     def __init__(self, **kwargs):
         """
         This is the environment for a d-level ion trap quantum computer as 
@@ -145,3 +146,9 @@ class EntangledIonsEnv(gym.Env, QuditQM):
         observation = np.append(self.state.real, self.state.imag, axis=0)
 
         return observation, reward, done, {}
+
+    def render(self, mode=None):
+        raise NotImplementedError
+
+    def close(self):
+        pass
