@@ -95,6 +95,7 @@ At this point we have the following environments available for you to play with:
 
 ## What's New
 
+- 2021-06-16 Added the [Toric Game](https://github.com/HendrikPN/scigym/tree/master/scigym/envs/quantum_physics/quantum_computing/toricgame) environment
 - 2021-06-09 Added [entangled-ions](https://github.com/HendrikPN/scigym/tree/master/scigym/envs/quantum_physics/quantum_information/entangled_ions) environment.
 - 2021-06-08 This is `scigym` version 0.0.3! Now compatible with gym version 0.18.0
 - 2019-10-10 [scigym.ai] is online!

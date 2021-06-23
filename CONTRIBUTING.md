@@ -114,12 +114,13 @@ In order to add your standardized environment to the scigym package, follow the 
     from scigym.envs.foo.foo_env import FooEnv
     ```
 
-9. If your environment requires unit tests not covered by `scigym/envs/tests/test_envs.py` and `scigym/envs/tests/test_determinism.py` then add an environment specific unit test into the folder `scigym/envs/tests/`. Scigym uses `pytest` for all unit tests.
+9. Test your environment. Add your environment to the list of environments in `test_random_rollout()` in `scigym/envs/tests/test_envs.py`. Run `python -m pytest` in the root folder to test your environment. 
+10. If your environment requires unit tests not covered by `scigym/envs/tests/test_envs.py` and `scigym/envs/tests/test_determinism.py`, then add an environment specific unit test into the folder `scigym/envs/tests/`. Scigym uses `pytest` for all unit tests.
 
-10. Make a notification that a new environment has been included in the README.md under "What's new". 
-11. If your environment should be registered under a licence other than MIT, publish your licence statement in the LICENCE file under "Special Environments".
-12. Create a branch `environment/foo` and commit the changes there.
-13. Create a pull request to the master branch or a new branch at https://github.com/hendrikpn/scigym.
+11. Make a notification that a new environment has been included in the README.md under "What's new". 
+12. If your environment should be registered under a licence other than MIT, publish your licence statement in the LICENCE file under "Special Environments".
+13. Create a branch `environment/foo` and commit the changes there.
+14. Create a pull request to the master branch or a new branch at https://github.com/hendrikpn/scigym.
 
 
   [OpenAI gym]: https://github.com/openai/gym
